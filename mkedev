@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+"""
+Create a developer environment overlay.
+
+Usage:
+  mkedev env_name
+"""
+
+import os
+import sys
+import typing as T
+
+from pathlib import PurePath
+
+# Config global constants
+
+BIN        = PurePath(os.path.expandvars('$HOME/usr/bin'))
+CONDA_BASE = PurePath(os.path.expandvars('$HOME/usr/conda/envs'))
+EDEV_BASE  = PurePath(os.path.expandvars('$HOME/usr/edev'))
+
+
+# Function definitions
+def main(args: T.Optional[list]=None) -> int:
+    if args is None:
+        args = sys.argv[1:]
+
+    try:
+        ename = args[0]
+    except IndexError:
+        print(__doc__, file=sys.stderr)
+        return 1
+
+    edev = EDEV_BASE/ename
+    os.makedirs(edev, exist_ok=True)
+
+    acti_dir = CONDA_BASE/ename/'etc/conda/activate.d'
+    deac_dir = CONDA_BASE/ename/'etc/conda/deactivate.d'
+    os.makedirs(acti_dir, exist_ok=True)
+    os.makedirs(deac_dir, exist_ok=True)
+
+    eon = acti_dir/'edevon.sh'
+    eoff = deac_dir/'edevoff.sh'
+    if not os.path.islink(eon):
+        os.symlink(BIN/'edevon.sh', eon)
+    if not os.path.islink(eoff):
+        os.symlink(BIN/'edevoff.sh', eoff)
+
+    print(f"Environment dev overlay `{ename}` ready at `{edev}`")
+
+    return 0
+
+
+# Main entry point
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
