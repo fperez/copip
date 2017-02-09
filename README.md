@@ -2,7 +2,7 @@
 
 A tool to better manage PyPI and source packages (installed using `pip`, with or without `-e .`) in a conda-based workflow.
 
-The approach taken is to create a separate filesystem area where *all* non-conda installations go.  Then, we "hijack" the `--user` flag of Python's installation process by either always using `--user` during any pip-based installation.  When using the conda root environment this goes to `~/.local/...` (on *nix, there's a Windows-specific location too).  When using custom conda environments, we set the `$PYTHONUSERBASE` variable to point to a location named the same as the conda environment but separate in the filesystem, and set `$PATH` accordingly.
+The approach taken is to create a separate filesystem area where *all* non-conda installations go.  Then, we "hijack" the `--user` flag of Python's installation process by *always* using `--user` during any pip-based installation.  When using the conda root environment such area already exists: `~/.local/...` (on *nix, there's a Windows-specific location too).  When using custom conda environments, we set the `$PYTHONUSERBASE` variable to point to a location named the same as the conda environment but separate in the filesystem, and set `$PATH` accordingly.
 
 This avoids the problem of conflicts arising after packages have been added to a conda environment and a conda update potentially overwrites them.
 
@@ -26,7 +26,7 @@ Since this tool is designed to direct all pip installs to the user overlay, it s
 
 If you want to have the same behavior in your root conda env, you should:
 
-- Also set `PIP_USER=True` in your regular shell config file ( `.bashrc` or equivalent).
+- Also set `PIP_USER=True` in your regular shell config file ( `~/.bashrc` or equivalent).
 
 - Ensure that `~/.local/bin` is in your `PATH`, so that script entry points installed by new packages are also found first.
 
