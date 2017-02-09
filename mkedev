@@ -31,12 +31,13 @@ def main(args: T.Optional[list]=None) -> int:
         return 1
 
     edev = EDEV_BASE/ename
-    os.makedirs(edev, exist_ok=True)
+    edev.mkdir(parents=True, exist_ok=True)
 
     acti_dir = CONDA_BASE/ename/'etc/conda/activate.d'
     deac_dir = CONDA_BASE/ename/'etc/conda/deactivate.d'
-    os.makedirs(acti_dir, exist_ok=True)
-    os.makedirs(deac_dir, exist_ok=True)
+
+    acti_dir.mkdir(parents=True, exist_ok=True)
+    deac_dir.mkdir(parents=True, exist_ok=True)
 
     eon = acti_dir/'edevon.sh'
     eoff = deac_dir/'edevoff.sh'
