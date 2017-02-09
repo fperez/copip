@@ -22,6 +22,8 @@ Assuming your paths are properly set up as above, you can use this to manage an 
 mkedev foo
 ```
 
+Since this tool is designed to direct all pip installs to the user overlay, it sets the environment variable `PIP_USER=True` unconditionally on environment activation.  If you want to have the same behavior in your root conda env, you should set the same in your regular `.bashrc` config file.
+
 Then, whenever you are in your conda `foo` environment, **always* install packages with `pip install --user` (whether from PyPI or local sources).
 
 To use it also with your root environment the same applies, you just need to make sure that `~/.local/bin` is in your `PATH`.
