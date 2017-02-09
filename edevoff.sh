@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
-unset PYTHONUSERBASE
+# Deactivate a developer environment overlay.
+
 export PATH=$_PATH_EDEV_OLD
+export PIP_USER=$_PIP_USER_EDEV_OLD
+export PREFIX=$_PREFIX_EDEV_OLD
+
+unset PYTHONUSERBASE
