@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
 if __name__ == '__main__':
+    import sys
     import edev
     sys.exit(edev.main(sys.argv[1:]))
