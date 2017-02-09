@@ -10,13 +10,13 @@ import os
 import sys
 import typing as T
 
-from pathlib import PurePath
+from pathlib import Path
 
 # Config global constants
 
-BIN        = PurePath(os.path.expandvars('$HOME/usr/bin'))
-CONDA_BASE = PurePath(os.path.expandvars('$HOME/usr/conda/envs'))
-EDEV_BASE  = PurePath(os.path.expandvars('$HOME/usr/edev'))
+BIN        = Path(os.path.expandvars('$HOME/usr/bin'))
+CONDA_BASE = Path(os.path.expandvars('$HOME/usr/conda/envs'))
+EDEV_BASE  = Path(os.path.expandvars('$HOME/usr/edev'))
 
 
 # Function definitions
