@@ -30,15 +30,15 @@ def main(args: T.Optional[list]=None) -> int:
         print(__doc__, file=sys.stderr)
         return 1
 
-    edev = EDEV_BASE/ename
-    edev.mkdir(parents=True, exist_ok=True)
-
+    # Create directories for holding installed files and env. config
+    edev_dir = EDEV_BASE/ename
     acti_dir = CONDA_BASE/ename/'etc/conda/activate.d'
     deac_dir = CONDA_BASE/ename/'etc/conda/deactivate.d'
 
-    acti_dir.mkdir(parents=True, exist_ok=True)
-    deac_dir.mkdir(parents=True, exist_ok=True)
+    for d in [edev_dir, acti_dir, deac_dir]:
+        d.mkdir(parents=True, exist_ok=True)
 
+    # Symlink env. config scripts inside conda activ/deact directories
     eon = acti_dir/'edevon.sh'
     eoff = deac_dir/'edevoff.sh'
     if not eon.is_symlink():
@@ -46,7 +46,7 @@ def main(args: T.Optional[list]=None) -> int:
     if not eoff.is_symlink():
         eoff.symlink_to(BIN/'edevoff.sh')
 
-    print(f"Environment dev overlay `{ename}` ready at `{edev}`")
+    print(f"Environment dev overlay `{ename}` ready at `{edev_dir}`")
 
     return 0
 
