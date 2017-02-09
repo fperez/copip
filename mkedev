@@ -40,9 +40,9 @@ def main(args: T.Optional[list]=None) -> int:
 
     eon = acti_dir/'edevon.sh'
     eoff = deac_dir/'edevoff.sh'
-    if not os.path.islink(eon):
+    if not eon.is_symlink():
         os.symlink(BIN/'edevon.sh', eon)
-    if not os.path.islink(eoff):
+    if not eoff.is_symlink():
         os.symlink(BIN/'edevoff.sh', eoff)
 
     print(f"Environment dev overlay `{ename}` ready at `{edev}`")
