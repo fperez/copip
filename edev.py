@@ -31,7 +31,7 @@ def main(args: T.Optional[list]=None) -> int:
         ename = args[0]
     except IndexError:
         print(__doc__, file=sys.stderr)
-        return 1
+        return 64
 
     # Create directories for holding installed files and env. config
     edev_dir = EDEV_BASE/ename
@@ -40,7 +40,7 @@ def main(args: T.Optional[list]=None) -> int:
 
     if not (CONDA_BASE/ename).is_dir():
         print(f"Environment {ename} doesn't exist, exiting.", file=sys.stderr)
-        return 1
+        return 64
 
     for d in [edev_dir, acti_dir, deac_dir]:
         d.mkdir(parents=True, exist_ok=True)
@@ -58,11 +58,11 @@ def main(args: T.Optional[list]=None) -> int:
 
 # Unit tests
 def test_no_args():
-    assert main([]) == 1
+    assert main([]) == 64
 
 
 def test_noenv():
-    assert main(['__BADENV_NAME_zyxw__']) == 1
+    assert main(['__BADENV_NAME_zyxw__']) == 64
 
 
 def test_normal():
