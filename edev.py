@@ -8,7 +8,6 @@ Usage:
 
 # Stdlib imports
 
-import os
 import sys
 import typing as T
 
@@ -16,9 +15,9 @@ from pathlib import Path
 
 # Config global constants
 
-BIN        = Path(os.path.expandvars('$HOME/usr/bin'))
-CONDA_BASE = Path(os.path.expandvars('$HOME/usr/conda/envs'))
-EDEV_BASE  = Path(os.path.expandvars('$HOME/usr/edev'))
+BIN        = Path('~/usr/bin').expanduser()
+CONDA_BASE = Path('~/usr/conda/envs').expanduser()
+EDEV_BASE  = Path('~/usr/edev').expanduser()
 EDEV_ON    = Path('edevon.sh')
 EDEV_OFF   = Path('edevoff.sh')
 
