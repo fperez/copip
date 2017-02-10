@@ -80,9 +80,12 @@ def test_normal():
     try:
         assert main([ename]) == 0
         assert (EDEV_BASE/ename).is_dir()
-        edevon = CONDA_BASE/ename/'etc/conda/activate.d'/EDEV_ON
-        assert edevon.is_symlink()
-        assert edevon.resolve().open().read() == EDEV_ON.open().read()
+
+        for script, cdir in [(EDEV_ON, 'activate.d'),
+                             (EDEV_OFF, 'deactivate.d')]:
+            src = CONDA_BASE/ename/'etc/conda'/cdir/script
+            assert src.is_symlink()
+            assert src.samefile(script)
     finally:
         sh(f"conda remove -n {ename} --all --yes")
 
