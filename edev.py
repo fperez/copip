@@ -72,10 +72,11 @@ def test_normal():
     sh = functools.partial(subprocess.run, shell=True, check=True)
 
     ename = '__tmp_edev_env__'
+    edev  = EDEV_BASE/ename
     sh(f"conda create -n {ename} --yes")
     try:
         assert main([ename]) == 0
-        assert (EDEV_BASE/ename).is_dir()
+        assert edev.is_dir()
 
         for script, cdir in [(EDEV_ON, 'activate.d'),
                              (EDEV_OFF, 'deactivate.d')]:
@@ -83,6 +84,7 @@ def test_normal():
             assert src.is_symlink()
             assert src.samefile(script)
     finally:
+        edev.rmdir()
         sh(f"conda remove -n {ename} --all --yes")
 
 
