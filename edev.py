@@ -47,13 +47,10 @@ def main(args: T.Optional[list]=None) -> int:
         d.mkdir(parents=True, exist_ok=True)
 
     # Symlink env. config scripts inside conda activ/deact directories
-    eon  = acti_dir/EDEV_ON
-    eoff = deac_dir/EDEV_OFF
-
-    if not eon.is_symlink():
-        eon.symlink_to(BIN/EDEV_ON)
-    if not eoff.is_symlink():
-        eoff.symlink_to(BIN/EDEV_OFF)
+    for script, cdir in [(EDEV_ON, acti_dir), (EDEV_OFF, deac_dir)]:
+        src = cdir/script
+        if not src.is_symlink():
+            src.symlink_to(BIN/script)
 
     print(f"Environment dev overlay `{ename}` ready at `{edev_dir}`")
 
@@ -61,12 +58,12 @@ def main(args: T.Optional[list]=None) -> int:
 
 
 # Unit tests
-def test_noenv():
-    assert main(['__BADENV_NAME_zyxw__']) == 1
-
-
 def test_no_args():
     assert main([]) == 1
+
+
+def test_noenv():
+    assert main(['__BADENV_NAME_zyxw__']) == 1
 
 
 def test_normal():
