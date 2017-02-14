@@ -1,0 +1,9 @@
+# RC file for conda environment subshells
+
+source ~/.bashrc
+source activate $_CONDA_ENV_NAME
+
+if [ $? -ne 0 ]; then
+    echo "*** ERROR activating environment, exiting subshell."
+    exit $?
+fi

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Replacement for conda's "activate" file, that instead starts a subshell
+# for the new environment.
+
+# Location of this hardcoded for now. If this became standard conda practice,
+# it could be replaced with `conda info --root`/bash_condarc
+BASH_CONDARC="~/usr/bin/bash_condarc"
+
+_CONDA_ENV_NAME=${1-root}
+
+# We are going to transfer control to a new subshell, so that getting back to
+# the previous envirionment is possible just by exiting the subshell. The
+# subshell will then call "source activate" within it.
+#
+# We set the name of the new conda env so we can call "source activate $ENV"
+# correctly, preserving compatibility with how conda currently works.
+
+export _CONDA_ENV_NAME
+echo "*** Starting sub-shell for conda env: $_CONDA_ENV_NAME"
+bash --rcfile $BASH_CONDARC
+unset _CONDA_ENV_NAME

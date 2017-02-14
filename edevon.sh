@@ -16,7 +16,7 @@ export PIP_USER=True
 export PREFIX
 export PYTHONUSERBASE=$PREFIX
 
-echo "Environment Developer Overlay ON"  # dbg
+echo "*** Environment developer overlay active"  # dbg
 
 # This will require some extra utilities if we want to also manage multiple
 # other environment variables.  For later.
