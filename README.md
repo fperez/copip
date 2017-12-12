@@ -6,7 +6,7 @@ The approach taken is to create a separate filesystem area where *all* non-conda
 
 This avoids the problem of conflicts arising after packages have been added to a conda environment and a conda update potentially overwrites them.
 
-It has been tested lightly in my own workflow, but I'm sure there's still a ton of edge cases it misses.
+I have used this a fair amount for a few months, and so far it hasn't failed me.  As usual, caveat emptor.
 
 
 ## Setup
