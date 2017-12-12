@@ -1,4 +1,4 @@
-# Environment Development Overlays for Conda
+# copip: conda-pip environment development overlays
 
 A tool to better manage PyPI and source packages (installed using `pip`, with or without `-e .`) in a conda-based workflow.
 
@@ -11,7 +11,7 @@ It has been tested lightly in my own workflow, but I'm sure there's still a ton 
 
 ## Setup
 
-There's no packaging/installation yet.  Right now I'm assuming the three files (python driver and pre/post activation shell scripts) go into `$HOME/usr/bin`, which is in my `PATH`, and it will create the filesystem overlay directories in `$HOME/usr/edev`.  I also assume a conda installation in `$HOME/usr/conda`. For now, none of that is configurable.  If this approach proves useful, later on we can properly package it and make it more flexible.  If you want to test this without making changes to your setup, just make those be symlinks and it should all work.
+There's no packaging/installation yet.  You 
 
 
 ## Usage
