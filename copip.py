@@ -8,7 +8,7 @@ Usage:
 
 # Stdlib imports
 
-import shutil
+import os
 import sys
 import typing as T
 
@@ -21,7 +21,6 @@ COPIP_DIR  = Path(__file__).parent
 COPIP_ON   = Path('copipon.sh')
 COPIP_OFF  = Path('copipoff.sh')
 
-#print(__file__); sys.exit(1)
 
 # Function definitions
 def main(args: T.Optional[list]=None) -> int:
@@ -50,7 +49,7 @@ def main(args: T.Optional[list]=None) -> int:
     for script, cdir in [(COPIP_ON, acti_dir), (COPIP_OFF, deac_dir)]:
         dest = cdir/script
         if not dest.is_file():
-            shutil.copy(COPIP_DIR/script, dest)
+            os.link(COPIP_DIR/script, dest)
 
     print(f"Environment dev overlay `{ename}` ready at `{copip_dir}`")
 
@@ -73,7 +72,7 @@ def test_normal():
     sh = functools.partial(subprocess.run, shell=True, check=True)
 
     ename = '__tmp_copip_env__'
-    copip  = copip_BASE/ename
+    copip  = CONDA_BASE/ename
     sh(f"conda create -n {ename} --yes")
     try:
         assert main([ename]) == 0
@@ -82,10 +81,9 @@ def test_normal():
         for script, cdir in [(COPIP_ON, 'activate.d'),
                              (COPIP_OFF, 'deactivate.d')]:
             src = CONDA_BASE/ename/'etc/conda'/cdir/script
-            assert src.is_symlink()
-            assert src.samefile(script)
+            assert src.is_file()
+            assert src.samefile(COPIP_DIR/script)
     finally:
-        copip.rmdir()
         sh(f"conda remove -n {ename} --all --yes")
 
 
