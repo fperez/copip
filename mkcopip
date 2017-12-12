@@ -2,5 +2,5 @@
 
 if __name__ == '__main__':
     import sys
-    import edev
-    sys.exit(edev.main(sys.argv[1:]))
+    import copip
+    sys.exit(copip.main(sys.argv[1:]))
