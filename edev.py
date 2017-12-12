@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 """
-Create a developer environment overlay.
+Create a conda-pip 'copip' development overlay.
 
 Usage:
-  mkedev env_name
+  mkcopip env_name
 """
 
 # Stdlib imports
 
+import shutil
 import sys
 import typing as T
 
 from pathlib import Path
+from subprocess import check_output as sh
 
 # Config global constants
+CONDA_BASE = Path(sh(['conda', 'info', '--root']).decode().strip())/'envs'
+COPIP_DIR  = Path(__file__).parent
+COPIP_ON   = Path('copipon.sh')
+COPIP_OFF  = Path('copipoff.sh')
 
-BIN        = Path('~/usr/bin').expanduser()
-CONDA_BASE = Path('~/usr/conda/envs').expanduser()
-EDEV_BASE  = Path('~/usr/edev').expanduser()
-EDEV_ON    = Path('edevon.sh')
-EDEV_OFF   = Path('edevoff.sh')
-
+#print(__file__); sys.exit(1)
 
 # Function definitions
 def main(args: T.Optional[list]=None) -> int:
@@ -34,7 +35,7 @@ def main(args: T.Optional[list]=None) -> int:
         return 64
 
     # Create directories for holding installed files and env. config
-    edev_dir = EDEV_BASE/ename
+    copip_dir = CONDA_BASE/ename/'copip'
     acti_dir = CONDA_BASE/ename/'etc/conda/activate.d'
     deac_dir = CONDA_BASE/ename/'etc/conda/deactivate.d'
 
@@ -42,16 +43,16 @@ def main(args: T.Optional[list]=None) -> int:
         print(f"Environment {ename} doesn't exist, exiting.", file=sys.stderr)
         return 64
 
-    for d in [edev_dir, acti_dir, deac_dir]:
+    for d in [copip_dir, acti_dir, deac_dir]:
         d.mkdir(parents=True, exist_ok=True)
 
     # Symlink env. config scripts inside conda activ/deact directories
-    for script, cdir in [(EDEV_ON, acti_dir), (EDEV_OFF, deac_dir)]:
-        src = cdir/script
-        if not src.is_symlink():
-            src.symlink_to(BIN/script)
+    for script, cdir in [(COPIP_ON, acti_dir), (COPIP_OFF, deac_dir)]:
+        dest = cdir/script
+        if not dest.is_file():
+            shutil.copy(COPIP_DIR/script, dest)
 
-    print(f"Environment dev overlay `{ename}` ready at `{edev_dir}`")
+    print(f"Environment dev overlay `{ename}` ready at `{copip_dir}`")
 
     return 0
 
@@ -71,20 +72,20 @@ def test_normal():
 
     sh = functools.partial(subprocess.run, shell=True, check=True)
 
-    ename = '__tmp_edev_env__'
-    edev  = EDEV_BASE/ename
+    ename = '__tmp_copip_env__'
+    copip  = copip_BASE/ename
     sh(f"conda create -n {ename} --yes")
     try:
         assert main([ename]) == 0
-        assert edev.is_dir()
+        assert copip.is_dir()
 
-        for script, cdir in [(EDEV_ON, 'activate.d'),
-                             (EDEV_OFF, 'deactivate.d')]:
+        for script, cdir in [(COPIP_ON, 'activate.d'),
+                             (COPIP_OFF, 'deactivate.d')]:
             src = CONDA_BASE/ename/'etc/conda'/cdir/script
             assert src.is_symlink()
             assert src.samefile(script)
     finally:
-        edev.rmdir()
+        copip.rmdir()
         sh(f"conda remove -n {ename} --all --yes")
 
 
