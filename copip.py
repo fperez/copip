@@ -16,7 +16,7 @@ from pathlib import Path
 from subprocess import check_output as sh
 
 # Config global constants
-CONDA_BASE = Path(sh(['conda', 'info', '--root']).decode().strip())/'envs'
+CONDA_BASE = Path(sh(['conda', 'info', '--base']).decode().strip())/'envs'
 COPIP_DIR  = Path(__file__).parent
 COPIP_ON   = Path('copipon.sh')
 COPIP_OFF  = Path('copipoff.sh')
@@ -35,8 +35,8 @@ def main(args: T.Optional[list]=None) -> int:
 
     # Create directories for holding installed files and env. config
     copip_dir = CONDA_BASE/ename/'copip'
-    acti_dir = CONDA_BASE/ename/'etc/conda/activate.d'
-    deac_dir = CONDA_BASE/ename/'etc/conda/deactivate.d'
+    acti_dir  = CONDA_BASE/ename/'etc/conda/activate.d'
+    deac_dir  = CONDA_BASE/ename/'etc/conda/deactivate.d'
 
     if not (CONDA_BASE/ename).is_dir():
         print(f"Environment {ename} doesn't exist, exiting.", file=sys.stderr)

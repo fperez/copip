@@ -5,7 +5,7 @@
 
 # Location of this hardcoded for now. If this became standard conda practice,
 # it could be replaced with `conda info --root`/bash_condarc
-BASH_CONDARC="~/dev/copip/bash_condarc"
+BASH_CONDARC="$HOME/dev/copip/bash_condarc"
 
 _CONDA_ENV_NAME=${1-root}
 
